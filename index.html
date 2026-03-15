@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary: #1877f2; --bg: #f0f2f5; --white: #ffffff; --royal: #1c1e21; --gold: #ffc107; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; }
-        header { background: var(--white); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        header { background: var(--white); padding: 10px 15px; display: flex; justify-content: center; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .logo { color: var(--primary); font-size: 26px; font-weight: bold; }
         .banner { background: var(--royal); color: var(--gold); padding: 12px; text-align: center; font-size: 14px; border-bottom: 3px solid var(--gold); }
         .page { display: none; padding: 15px; max-width: 500px; margin: auto; }
@@ -16,11 +16,7 @@
         .card { background: var(--white); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .btn { background: var(--primary); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
-        .post { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .post b { color: var(--primary); }
-        .bottom-nav { background: var(--white); position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
-        .nav-item { color: #65676b; font-size: 22px; cursor: pointer; }
-        .nav-item.active { color: var(--primary); }
+        .post-author { color: var(--primary); font-weight: bold; margin-bottom: 5px; display: block; }
     </style>
 </head>
 <body>
@@ -28,7 +24,7 @@
 <header><div class="logo">Amde-Chat</div></header>
 <div class="banner">🏰 ዛጉዌዎቹ፡ የጥበብ ምንጭ፣ የክብር ማህደር!</div>
 
-<div id="profile" class="page active-page">
+<div id="auth-page" class="page active-page">
     <div class="card" style="text-align: center;">
         <h2 id="auth-title">ይግቡ</h2>
         <input type="email" id="email" placeholder="ኢሜይል">
@@ -38,17 +34,13 @@
     </div>
 </div>
 
-<div id="home" class="page">
+<div id="home-page" class="page">
     <div class="card">
         <textarea id="postText" placeholder="ምን እያሰቡ ነው?"></textarea>
         <button class="btn" onclick="createPost()">Post ያድርጉ</button>
     </div>
     <div id="feed"></div>
-</div>
-
-<div class="bottom-nav">
-    <div class="nav-item" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
-    <div class="nav-item active" onclick="showPage('profile', this)"><i class="fas fa-user-circle"></i></div>
+    <button class="btn" style="background: #65676b; margin-top: 20px;" onclick="location.reload()">ውጣ (Logout)</button>
 </div>
 
 <script type="module">
@@ -56,7 +48,6 @@
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // ያንተ አዲሱ Config
     const firebaseConfig = {
         apiKey: "AIzaSyBHcrGqhXf4tkIqPi1sMCFC4zo9XrRoBFE",
         authDomain: "amde-chat-46e14.firebaseapp.com",
@@ -75,7 +66,8 @@
     onAuthStateChanged(auth, (user) => {
         if (user) {
             currentUser = user;
-            showPage('home', document.querySelector('.fa-home').parentElement);
+            document.getElementById('auth-page').classList.remove('active-page');
+            document.getElementById('home-page').classList.add('active-page');
             loadPosts();
         }
     });
@@ -83,18 +75,27 @@
     window.handleAuth = async () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const isLogin = document.getElementById('auth-btn').innerText === "ግባ";
         try {
-            if (document.getElementById('auth-btn').innerText === "ግባ") {
-                await signInWithEmailAndPassword(auth, email, password);
-            } else {
-                await createUserWithEmailAndPassword(auth, email, password);
-            }
+            if (isLogin) { await signInWithEmailAndPassword(auth, email, password); }
+            else { await createUserWithEmailAndPassword(auth, email, password); }
         } catch (e) { alert("ስህተት፡ " + e.message); }
+    };
+
+    window.toggleAuth = () => {
+        const btn = document.getElementById('auth-btn');
+        const title = document.getElementById('auth-title');
+        const text = document.getElementById('toggle-text');
+        if (btn.innerText === "ግባ") {
+            btn.innerText = "ተመዝገብ"; title.innerText = "ይመዝገቡ"; text.innerText = "አካውንት ካለዎት ይግቡ";
+        } else {
+            btn.innerText = "ግባ"; title.innerText = "ይግቡ"; text.innerText = "አዲስ አካውንት ለመክፈት እዚህ ይጫኑ";
+        }
     };
 
     window.createPost = async () => {
         const text = document.getElementById('postText').value;
-        if (!text || !currentUser) return;
+        if (!text) return;
         try {
             await addDoc(collection(db, "posts"), {
                 text: text,
@@ -112,28 +113,10 @@
             feed.innerHTML = "";
             snapshot.forEach(doc => {
                 const data = doc.data();
-                feed.innerHTML += `<div class="card post"><b>${data.user}</b><p>${data.text}</p></div>`;
+                feed.innerHTML += `<div class="card"><span class="post-author">${data.user}</span><p>${data.text}</p></div>`;
             });
         });
     }
-
-    window.showPage = (pageId, element) => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-        document.getElementById(pageId).classList.add('active-page');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        element.classList.add('active');
-    };
-
-    window.toggleAuth = () => {
-        const btn = document.getElementById('auth-btn');
-        const title = document.getElementById('auth-title');
-        const text = document.getElementById('toggle-text');
-        if (btn.innerText === "ግባ") {
-            btn.innerText = "ተመዝገብ"; title.innerText = "ይመዝገቡ"; text.innerText = "አካውንት ካለዎት ይግቡ";
-        } else {
-            btn.innerText = "ግባ"; title.innerText = "ይግቡ"; text.innerText = "አዲስ አካውንት ለመክፈት እዚህ ይጫኑ";
-        }
-    };
 </script>
 </body>
 </html>
