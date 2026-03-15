@@ -16,7 +16,7 @@
         .card { background: var(--white); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .btn { background: var(--primary); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
-        .bottom-nav { background: var(--white); position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; }
+        .bottom-nav { background: var(--white); position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
         .nav-item { color: #65676b; font-size: 22px; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
     </style>
@@ -37,18 +37,23 @@
 </div>
 
 <div id="home" class="page">
-    <div class="card"><h3>እንኳን ደህና መጡ!</h3><p id="user-display">አሁን መግባት ችለዋል።</p></div>
+    <div class="card">
+        <h3>እንኳን ደህና መጡ!</h3>
+        <p>አሁን መግባት ችለዋል። በአምዴ-ቻት የዛጉዌን ታሪክ እና ጥበብ ያጋሩ።</p>
+    </div>
 </div>
 
 <div class="bottom-nav">
-    <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
-    <div class="nav-item" onclick="showPage('profile', this)"><i class="fas fa-user-circle"></i></div>
+    <div class="nav-item" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
+    <div class="nav-item active" onclick="showPage('profile', this)"><i class="fas fa-user-circle"></i></div>
 </div>
 
 <script type="module">
+    // Firebase SDKs from CDN
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+    // ያንተ Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyBsPeWeVmHxcsiUgkSNZQ7VGurBb9_Wqm0",
         authDomain: "amde-chat.firebaseapp.com",
@@ -58,11 +63,13 @@
         appId: "1:266313399285:web:4004cd738664d1aa77bebc"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     let isLoginMode = true;
 
+    // Toggle between Login and Signup
     window.toggleAuth = () => {
         isLoginMode = !isLoginMode;
         document.getElementById('auth-title').innerText = isLoginMode ? "ይግቡ" : "ይመዝገቡ";
@@ -70,9 +77,16 @@
         document.getElementById('toggle-text').innerText = isLoginMode ? "አዲስ አካውንት ለመክፈት እዚህ ይጫኑ" : "አካውንት ካለዎት ይግቡ";
     };
 
+    // Handle Login and Signup
     window.handleAuth = async () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+
+        if(!email || !password) {
+            alert("እባክዎ ኢሜይል እና ፓስወርድ ያስገቡ");
+            return;
+        }
+
         try {
             if (isLoginMode) {
                 await signInWithEmailAndPassword(auth, email, password);
@@ -81,10 +95,14 @@
                 await createUserWithEmailAndPassword(auth, email, password);
                 alert("በተሳካ ሁኔታ ተመዝግበዋል!");
             }
+            // መግባት ሲሳካ ወደ Home ገጽ ይወስዳል
             showPage('home', document.querySelector('.fa-home').parentElement);
-        } catch (error) { alert("ስህተት፡ " + error.message); }
+        } catch (error) {
+            alert("ስህተት፡ " + error.message);
+        }
     };
 
+    // Page Switching Logic
     window.showPage = (pageId, element) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
@@ -92,5 +110,6 @@
         element.classList.add('active');
     };
 </script>
+
 </body>
 </html>
