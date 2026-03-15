@@ -7,32 +7,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary: #1877f2; --bg: #f0f2f5; --white: #ffffff; --text-gray: #65676b; --gold: #ffc107; }
-        body { font-family: 'Segoe UI', Tahoma, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
         header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
-        .logo { color: var(--primary); font-size: 26px; font-weight: bold; text-decoration: none; }
+        .logo { color: var(--primary); font-size: 26px; font-weight: bold; }
+        .zagwe-quote { background: linear-gradient(45deg, #1c1e21, #3a3d42); color: var(--gold); padding: 12px; text-align: center; font-style: italic; font-size: 13px; border-bottom: 3px solid var(--gold); }
         .nav-tabs { display: flex; justify-content: space-around; border-top: 1px solid #eee; }
-        .nav-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-gray); font-size: 22px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .nav-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-gray); font-size: 20px; cursor: pointer; border-bottom: 3px solid transparent; }
         .nav-item.active { color: var(--primary); border-bottom-color: var(--primary); }
-        .page { display: none; padding: 12px; max-width: 550px; margin: auto; }
+        .page { display: none; padding: 15px; max-width: 500px; margin: auto; }
         .active-page { display: block; }
-        .card { background: var(--white); border-radius: 8px; padding: 15px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .card { background: var(--white); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         input, textarea, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
-        .btn { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .post-img { width: 100%; border-radius: 8px; margin-top: 10px; max-height: 400px; object-fit: cover; }
-        .chat-box { height: 350px; overflow-y: auto; display: flex; flex-direction: column; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
-        .msg { padding: 10px 14px; border-radius: 18px; margin: 4px 0; max-width: 75%; font-size: 15px; line-height: 1.4; position: relative; }
+        .btn { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .post-img { width: 100%; border-radius: 8px; margin-top: 10px; }
+        .chat-box { height: 300px; overflow-y: auto; display: flex; flex-direction: column; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .msg { padding: 8px 12px; border-radius: 18px; margin: 4px 0; max-width: 75%; font-size: 14px; }
         .msg.sent { background: var(--primary); color: white; align-self: flex-end; }
         .msg.received { background: #e4e6eb; color: black; align-self: flex-start; }
-        .like-bar { display: flex; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; gap: 20px; }
-        .action-btn { background: none; border: none; color: var(--text-gray); cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 5px; }
-        .action-btn.liked { color: var(--primary); }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="top-bar"><a href="#" class="logo">Amde-Chat</a><i class="fas fa-search" style="font-size:20px; color:var(--text-gray);"></i></div>
+    <div class="top-bar"><div class="logo">Amde-Chat</div><i class="fas fa-search" style="font-size:18px; color:gray;"></i></div>
+    <div class="zagwe-quote">"ዛጉዌዎቹ፡ ከዓለት የተቀረጸ ጥበብ፣ በክብር የቆመ ማንነት። አሻራችንን እናድሳለን!" 🏰✨</div>
     <div id="main-nav" class="nav-tabs" style="display: none;">
         <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-home"></i></div>
         <div class="nav-item" onclick="showTab('friends', this)"><i class="fas fa-users"></i></div>
@@ -42,37 +41,34 @@
 </header>
 
 <div id="auth-page" class="page active-page">
-    <div class="card" style="text-align: center;">
-        <h2 id="auth-title">ግባ</h2>
+    <div class="card">
+        <h2 id="auth-title" style="text-align:center;">ግባ</h2>
         <div id="reg-fields" style="display:none;"><input type="text" id="fullName" placeholder="ሙሉ ስም"></div>
         <input type="email" id="email" placeholder="ኢሜይል">
         <input type="password" id="password" placeholder="የምስጢር ቁጥር">
         <button class="btn" onclick="handleAuth()" id="auth-btn">ግባ</button>
-        <p onclick="toggleAuth()" id="toggle-text" style="color:var(--primary); cursor:pointer;">አዲስ አካውንት ይክፈቱ</p>
+        <p onclick="toggleAuth()" style="color:var(--primary); text-align:center; cursor:pointer; font-size:14px;">አዲስ አካውንት ይክፈቱ</p>
     </div>
 </div>
 
 <div id="home" class="page">
     <div class="card">
         <textarea id="postText" placeholder="ምን እያሰቡ ነው?"></textarea>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <label for="postFile" style="cursor:pointer; color:var(--primary);"><i class="fas fa-image"></i> ፎቶ</label>
-            <input type="file" id="postFile" accept="image/*" style="display:none;" onchange="alert('ፎቶ ተመርጧል!')">
-        </div>
+        <input type="file" id="postFile" accept="image/*" style="font-size:12px;">
         <button class="btn" onclick="createPost()" id="post-btn">Post</button>
     </div>
     <div id="feed"></div>
 </div>
 
-<div id="friends" class="page"><div class="card"><h3>ጓደኞች</h3><div id="users-list"></div></div></div>
+<div id="friends" class="page"><div class="card"><h3>ሰዎችን ፈልግ</h3><div id="users-list"></div></div></div>
 
 <div id="chat" class="page">
     <div class="card">
-        <h3>Live Chat</h3>
+        <h3>ቻት</h3>
         <div id="chat-container" class="chat-box"></div>
         <div style="display:flex; gap:5px; margin-top:10px;">
-            <input type="text" id="chatMsg" placeholder="መልዕክት ወይም የቪዲዮ ሊንክ...">
-            <button class="btn" style="width:70px;" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+            <input type="text" id="chatMsg" placeholder="መልዕክት...">
+            <button class="btn" style="width:70px;" onclick="sendMsg()">ላክ</button>
         </div>
     </div>
 </div>
@@ -82,18 +78,14 @@
         <i class="fas fa-user-circle" style="font-size: 60px; color: #ddd;"></i>
         <h3 id="p-name">ተጠቃሚ</h3>
         <hr>
-        <h4>የምስጢር ቁጥር መቀየሪያ</h4>
-        <input type="password" id="newPass" placeholder="አዲስ የምስጢር ቁጥር">
-        <button class="btn" onclick="changePass()" style="background: #42b72a;">Password ቀይር</button>
-        <br><br>
-        <button class="btn" style="background:#f0f2f5; color:red;" onclick="auth.signOut().then(()=>location.reload())">ውጣ (Logout)</button>
+        <button class="btn" style="background:#f0f2f5; color:red;" onclick="logoutUser()">ውጣ (Logout)</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBHcrGqhXf4tkIqPi1sMCFC4zo9XrRoBFE",
@@ -114,48 +106,62 @@
             document.getElementById('main-nav').style.display = 'flex';
             const u = await getDoc(doc(db, "users", user.uid));
             if(u.exists()) document.getElementById('p-name').innerText = u.data().fullName;
-            loadPosts(); loadMessages(); loadUsers();
+            loadPosts(); loadUsers(); loadMessages();
+        } else {
+            document.getElementById('auth-page').style.display = 'block';
+            document.getElementById('main-nav').style.display = 'none';
         }
     });
 
-    async function uploadToCloudinary(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'ml_default');
-        const res = await fetch('https://api.cloudinary.com/v1_1/demo/image/upload', { method: 'POST', body: formData });
-        const data = await res.json();
-        return data.secure_url;
-    }
+    window.logoutUser = () => {
+        signOut(auth).then(() => {
+            location.reload();
+        }).catch((error) => { alert("Logout አልተቻለም፦ " + error.message); });
+    };
+
+    window.handleAuth = async () => {
+        const e = document.getElementById('email').value, p = document.getElementById('password').value;
+        const isReg = document.getElementById('auth-btn').innerText === "ተመዝገብ";
+        try {
+            if (isReg) {
+                const fn = document.getElementById('fullName').value;
+                const uc = await createUserWithEmailAndPassword(auth, e, p);
+                await setDoc(doc(db, "users", uc.user.uid), { fullName: fn, email: e, uid: uc.user.uid });
+            } else { await signInWithEmailAndPassword(auth, e, p); }
+        } catch (err) { alert(err.message); }
+    };
 
     window.createPost = async () => {
         const t = document.getElementById('postText').value;
-        const file = document.getElementById('postFile').files[0];
         const btn = document.getElementById('post-btn');
-        let imgUrl = "";
-        if(!t && !file) return;
+        if(!t) return;
         btn.innerText = "በመለጠፍ ላይ...";
-        if(file) imgUrl = await uploadToCloudinary(file);
-        await addDoc(collection(db, "posts"), { text: t, image: imgUrl, user: auth.currentUser.email, time: Date.now(), likes: 0 });
-        document.getElementById('postText').value = ""; document.getElementById('postFile').value = ""; btn.innerText = "Post";
+        await addDoc(collection(db, "posts"), { text: t, user: auth.currentUser.email, time: Date.now() });
+        document.getElementById('postText').value = ""; btn.innerText = "Post";
     };
 
     function loadPosts() {
         onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), (snap) => {
             const f = document.getElementById('feed'); f.innerHTML = "";
             snap.forEach(d => {
-                const data = d.data();
-                f.innerHTML += `<div class="card">
-                    <strong>${data.user}</strong><p>${data.text}</p>
-                    ${data.image ? `<img src="${data.image}" class="post-img">` : ""}
-                    <div class="like-bar">
-                        <button class="action-btn" onclick="likePost('${d.id}')"><i class="far fa-thumbs-up"></i> Like (${data.likes || 0})</button>
-                    </div>
-                </div>`;
+                f.innerHTML += `<div class="card"><strong>${d.data().user}</strong><p>${d.data().text}</p></div>`;
             });
         });
     }
 
-    window.likePost = async (id) => { await updateDoc(doc(db, "posts", id), { likes: increment(1) }); };
+    async function loadUsers() {
+        onSnapshot(collection(db, "users"), (snap) => {
+            const list = document.getElementById('users-list'); list.innerHTML = "";
+            snap.forEach(d => {
+                if(d.id !== auth.currentUser.uid) {
+                    list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>${d.data().fullName}</span>
+                        <button class="btn" style="width:auto; padding:5px 10px;" onclick="alert('ጓደኝነት ተጠየቀ!')">Add Friend</button>
+                    </div>`;
+                }
+            });
+        });
+    }
 
     window.sendMsg = async () => {
         const m = document.getElementById('chatMsg').value; if(!m) return;
@@ -167,41 +173,10 @@
         onSnapshot(query(collection(db, "messages"), orderBy("time", "asc")), (snap) => {
             const c = document.getElementById('chat-container'); c.innerHTML = "";
             snap.forEach(d => {
-                const data = d.data();
-                const isMe = data.sender === auth.currentUser.email;
-                const content = data.text.includes('http') && (data.text.includes('mp4') || data.text.includes('youtu')) 
-                    ? `<video src="${data.text}" controls style="width:100%"></video>` : data.text;
-                c.innerHTML += `<div class="msg ${isMe?'sent':'received'}"><strong>${isMe?'እኔ':data.sender}</strong><br>${content}</div>`;
+                const isMe = d.data().sender === auth.currentUser.email;
+                c.innerHTML += `<div class="msg ${isMe?'sent':'received'}">${d.data().text}</div>`;
             });
             c.scrollTop = c.scrollHeight;
-        });
-    }
-
-    window.changePass = async () => {
-        const newP = document.getElementById('newPass').value;
-        if(newP.length < 6) return alert("ቢያንስ 6 ፊደል ይሁን!");
-        try {
-            await updatePassword(auth.currentUser, newP);
-            alert("Password ተቀይሯል!");
-        } catch(e) { alert("እንደገና ይግቡና ይሞክሩ!"); }
-    };
-
-    window.handleAuth = async () => {
-        const e = document.getElementById('email').value, p = document.getElementById('password').value;
-        const isReg = document.getElementById('auth-btn').innerText === "ተመዝገብ";
-        try {
-            if(isReg) {
-                const fn = document.getElementById('fullName').value;
-                const uc = await createUserWithEmailAndPassword(auth, e, p);
-                await setDoc(doc(db, "users", uc.user.uid), { fullName: fn, email: e });
-            } else { await signInWithEmailAndPassword(auth, e, p); }
-        } catch(err) { alert(err.message); }
-    };
-
-    async function loadUsers() {
-        const snap = await onSnapshot(collection(db, "users"), (s) => {
-            const list = document.getElementById('users-list'); list.innerHTML = "";
-            s.forEach(d => { if(d.id !== auth.currentUser?.uid) list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between;"><span>${d.data().fullName}</span><button class="btn" style="width:auto; padding:5px 10px;">Add</button></div>`; });
         });
     }
 
