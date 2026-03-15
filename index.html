@@ -7,26 +7,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary: #1877f2; --bg: #f0f2f5; --white: #ffffff; --text-gray: #65676b; --royal: #1c1e21; --gold: #ffc107; }
-        body { font-family: 'Segoe UI', 'Ubuntu', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
         
         header { background: var(--white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+        .top-bar { display: flex; justify-content: center; align-items: center; padding: 12px; }
         .logo { color: var(--primary); font-size: 28px; font-weight: bold; letter-spacing: -1px; }
         
-        /* የዛጉዌ ጥቅስ ባነር */
         .zagwe-quote { 
             background: linear-gradient(45deg, #1c1e21, #3a3d42); 
             color: var(--gold); 
             padding: 15px; 
             text-align: center; 
             font-style: italic; 
-            font-size: 15px; 
+            font-size: 14px; 
             border-bottom: 3px solid var(--gold);
             line-height: 1.6;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        .nav-tabs { display: flex; justify-content: space-around; border-top: 1px solid #ddd; }
+        .nav-tabs { display: flex; justify-content: space-around; border-top: 1px solid #eee; }
         .nav-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-gray); font-size: 22px; cursor: pointer; border-bottom: 3px solid transparent; }
         .nav-item.active { color: var(--primary); border-bottom-color: var(--primary); }
 
@@ -34,9 +32,9 @@
         .active-page { display: block; }
         .card { background: var(--white); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         
-        input, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
+        input, textarea, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
         .btn { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .post-author { color: var(--primary); font-weight: bold; }
+        .post-author { color: var(--primary); font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -44,7 +42,6 @@
 <header>
     <div class="top-bar">
         <div class="logo">Amde-Chat</div>
-        <div style="font-size: 20px; color: #333;"><i class="fas fa-search"></i></div>
     </div>
     
     <div class="zagwe-quote">
@@ -61,27 +58,30 @@
 </header>
 
 <div id="auth-page" class="page active-page">
-    <div class="card" style="text-align: center;">
-        <h2 id="auth-title">እንኳን ወደ አምዴ-ቻት መጡ</h2>
+    <div class="card">
         <input type="email" id="email" placeholder="ኢሜይል">
         <input type="password" id="password" placeholder="የምስጢር ቁጥር">
         <button class="btn" onclick="handleAuth()" id="auth-btn">ግባ</button>
-        <p onclick="toggleAuth()" style="color: var(--primary); cursor: pointer;">አዲስ አካውንት ለመክፈት እዚህ ይጫኑ</p>
+        <p onclick="toggleAuth()" style="color: var(--primary); cursor: pointer; text-align: center; font-size: 14px;">አዲስ አካውንት ለመክፈት እዚህ ይጫኑ</p>
     </div>
 </div>
 
 <div id="home" class="page">
     <div class="card">
-        <textarea id="postText" style="width:100%; height:80px; border:none; outline:none; font-size:16px; resize:none;" placeholder="ምን እያሰቡ ነው?"></textarea>
-        <hr style="opacity:0.1">
+        <textarea id="postText" style="border:none; outline:none; font-size:16px; resize:none; height:60px;" placeholder="ምን እያሰቡ ነው?"></textarea>
         <button class="btn" onclick="createPost()">Post</button>
     </div>
     <div id="feed"></div>
 </div>
 
-<div id="video" class="page"><div class="card"><h3>ቪዲዮዎች</h3><p>በቅርብ ቀን የሚለቀቁ የዛጉዌ ታሪካዊ ቪዲዮዎች...</p></div></div>
-<div id="chat" class="page"><div class="card"><h3>መልዕክቶች</h3><p>ከጓደኞችዎ ጋር ይገናኙ...</p></div></div>
-<div id="menu" class="page"><div class="card"><h3>ሜኑ</h3><button class="btn" style="background:#ddd; color:#333;" onclick="location.reload()">ውጣ (Logout)</button></div></div>
+<div id="video" class="page"><div class="card"><h3>ቪዲዮዎች</h3><p>ታሪካዊ ቪዲዮዎች እዚህ ይጫናሉ...</p></div></div>
+<div id="chat" class="page"><div class="card"><h3>መልዕክቶች</h3><p>የግል መልዕክቶች መላኪያ ክፍል...</p></div></div>
+<div id="menu" class="page">
+    <div class="card">
+        <h3>ሜኑ</h3>
+        <button class="btn" style="background:#f0f2f5; color:#333;" onclick="location.reload()">ውጣ (Logout)</button>
+    </div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -110,13 +110,6 @@
         }
     });
 
-    window.showTab = (tabId, el) => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-        document.getElementById(tabId).classList.add('active-page');
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-    }
-
     window.handleAuth = async () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -126,19 +119,28 @@
             } else {
                 await createUserWithEmailAndPassword(auth, email, password);
             }
-        } catch (e) { alert(e.message); }
+        } catch (e) { alert("ስህተት፦ " + e.message); }
     };
 
     window.toggleAuth = () => {
         const btn = document.getElementById('auth-btn');
         btn.innerText = (btn.innerText === "ግባ") ? "ተመዝገብ" : "ግባ";
-    }
+    };
+
+    window.showTab = (tabId, el) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(tabId).classList.add('active-page');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+    };
 
     window.createPost = async () => {
         const text = document.getElementById('postText').value;
         if (!text) return;
-        await addDoc(collection(db, "posts"), { text: text, user: auth.currentUser.email, time: Date.now() });
-        document.getElementById('postText').value = "";
+        try {
+            await addDoc(collection(db, "posts"), { text: text, user: auth.currentUser.email, time: Date.now() });
+            document.getElementById('postText').value = "";
+        } catch (e) { alert("መለጠፍ አልተቻለም"); }
     };
 
     function loadPosts() {
