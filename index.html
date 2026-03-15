@@ -1,393 +1,100 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amde-Chat | ዛጉዌዎቹ</title>
-    <style>
-        :root {
-            --primary: #1877f2;
-            --success: #42b72a;
-            --wag-gold: #ffc107;
-            --royal-gold: #d4af37;
-            --bg: #f0f2f5;
-        }
-
-        * { box-sizing: border-box; transition: all 0.4s ease; }
-        
-        body { 
-            font-family: 'Segoe UI', 'Abyssinica SIL', sans-serif; 
-            background: var(--bg); 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh;
-        }
-
-        .container { 
-            background: white; 
-            padding: 45px 30px; 
-            border-radius: 25px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15); 
-            width: 100%; 
-            max-width: 430px; 
-            text-align: center;
-            border-top: 8px solid var(--royal-gold);
-        }
-
-        .brand-logo { 
-            font-size: 50px; 
-            font-weight: 900; 
-            color: var(--primary); 
-            margin-bottom: 5px;
-            letter-spacing: -2px;
-        }
-
-        /* አዲሱ እና ማራኪው የታሪክ መግለጫ */
-        .zagwe-motto {
-            background: linear-gradient(135deg, #1c1e21 0%, #4b4f56 100%);
-            color: var(--wag-gold);
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 19px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid var(--royal-gold);
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 5px var(--royal-gold); }
-            to { box-shadow: 0 0 15px var(--wag-gold); }
-        }
-
-        .welcome-text { color: #4b4f56; font-size: 16px; margin-bottom: 25px; font-weight: 600; }
-
-        input, select { 
-            width: 100%; 
-            padding: 16px; 
-            margin-bottom: 18px; 
-            border: 2px solid #e4e6eb; 
-            border-radius: 15px; 
-            font-size: 16px; 
-            background: #f7f8fa;
-        }
-
-        input:focus { border-color: var(--royal-gold); background: white; outline: none; }
-
-        .btn { 
-            width: 100%; 
-            padding: 16px; 
-            border: none; 
-            border-radius: 15px; 
-            font-size: 19px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            margin-bottom: 15px;
-        }
-
-        .btn-login { background: linear-gradient(to right, #1877f2, #0056b3); color: white; }
-        .btn-signup { background: linear-gradient(to right, #d4af37, #b8860b); color: white; }
-        
-        .divider { border-top: 1px solid #dadde1; margin: 30px 0; position: relative; }
-        .divider::after { content: "ወይም"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 15px; color: #8d949e; }
-        
-        .page { display: none; animation: slideUp 0.6s ease; }
-        .active { display: block; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .footer-wag { margin-top: 20px; font-size: 13px; color: #90949c; border-top: 1px solid #eee; padding-top: 15px; }
-        .link { color: var(--primary); text-decoration: none; font-weight: bold; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amde-Chat | ዛጉዌዎቹ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1877f2; --bg: #f0f2f5; --white: #ffffff; --royal: #1c1e21; --gold: #ffc107; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding-bottom: 70px; }
+        header { background: var(--white); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .logo { color: var(--primary); font-size: 26px; font-weight: bold; }
+        .banner { background: var(--royal); color: var(--gold); padding: 12px; text-align: center; font-size: 14px; border-bottom: 3px solid var(--gold); }
+        .page { display: none; padding: 15px; max-width: 500px; margin: auto; }
+        .active-page { display: block; }
+        .card { background: var(--white); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn { background: var(--primary); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; }
+        .bottom-nav { background: var(--white); position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; }
+        .nav-item { color: #65676b; font-size: 22px; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="brand-logo">Amde-Chat</div>
-    
-    <div class="zagwe-motto">
-        🏰 ዛጉዌዎቹ ፡ የታሪካችን ድምፅ፣ የማንነታችን ኩራት!
-    </div>
+<header><div class="logo">Amde-Chat</div></header>
+<div class="banner">🏰 ዛጉዌዎቹ፡ የጥበብ ምንጭ፣ የክብር ማህደር!</div>
 
-    <div id="login-page" class="page active">
-        <div class="welcome-text"></div>
-        <select>
-            <option>ቋንቋ፡ አማርኛ</option>
-            <option>Language: English</option>
-        </select>
-        <input type="text" placeholder="ስልክ ወይም ኢሜይል">
-        <input type="password" placeholder="የምስጢር ቁጥር">
-        <button class="btn btn-login" onclick="alert('በመግባት ላይ...')">ይግቡ</button>
-        <a href="#" class="link">የምስጢር ቁጥር ረስተዋል?</a>
-        <div class="divider"></div>
-        <button class="btn btn-signup" onclick="showPage('signup-page')">አዲስ የቤት አባል ይሁኑ</button>
-        <div class="footer-wag">Amde-Chat ፡ የዋግኸምራ አንድነት ምልክት</div>
-    </div>
-
-    <div id="signup-page" class="page">
-        <div class="welcome-text">የዛጉዌዎቹን ቤተሰብ ይቀላቀሉ</div>
-        <input type="text" placeholder="ሙሉ ስምዎ">
-        <input type="tel" id="reg-phone" placeholder="የስልክ ቁጥርዎ">
-        <input type="password" placeholder="ጠንካራ የምስጢር ቁጥር ይፍጠሩ">
-        <button class="btn btn-signup" onclick="startOTP()">የማረጋገጫ ኮድ ይላክ</button>
-        <div class="divider"></div>
-        <a href="#" class="link" onclick="showPage('login-page')">አካውንት አለኝ? ይግቡ</a>
-    </div>
+<div id="profile" class="page active-page">
+    <div class="card" style="text-align: center;">
+        <h2 id="auth-title">ይግቡ</h2>
+        <input type="email" id="email" placeholder="ኢሜይል">
+        <input type="password" id="password" placeholder="የምስጢር ቁጥር">
+        <button class="btn" onclick="handleAuth()" id="auth-btn">ግባ</button>
+        <p onclick="toggleAuth()" style="color: var(--primary); cursor: pointer; margin-top: 15px;" id="toggle-text">አዲስ አካውንት ለመክፈት እዚህ ይጫኑ</p>
+    </div>
 </div>
 
-<script>
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-    // ... የተቀሩት የጃቫስክሪፕት ተግባራት
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="am">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amde-Chat | ዛጉዌዎቹ Lite</title>
-    <style>
-        :root {
-            --primary: #1877f2;
-            --royal-gold: #d4af37;
-            --wag-gold: #ffc107;
-            --bg: #f0f2f5;
-            --white: #ffffff;
-            --gray: #65676b;
-            --chat-left: #e4e6eb;
-            --chat-right: #0084ff;
-        }
-
-        body { font-family: 'Segoe UI', 'Abyssinica SIL', sans-serif; background: var(--bg); margin: 0; padding-top: 185px; overflow-x: hidden; }
-
-        /* Navigation & Header */
-        .top-nav {
-            background: var(--white);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-        }
-
-        .logo { color: var(--primary); font-size: 24px; font-weight: bold; letter-spacing: 1px; }
-
-        .zagwe-banner {
-            background: linear-gradient(135deg, #1c1e21 0%, #3a3d42 100%);
-            color: var(--wag-gold);
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-size: 14px;
-            font-weight: bold;
-            border-bottom: 3px solid var(--royal-gold);
-            text-align: center;
-        }
-
-        .tabs { display: flex; border-top: 1px solid #f0f2f5; }
-
-        .tab-item {
-            flex: 1;
-            text-align: center;
-            padding: 12px 0;
-            cursor: pointer;
-            font-size: 20px;
-            color: var(--gray);
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-item.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .page-content { display: none; max-width: 500px; margin: 0 auto; padding: 10px; }
-        .active-page { display: block; }
-
-        /* Chat Interface */
-        .chat-list-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--white);
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-        }
-
-        .chat-list-item:hover { background: #f9f9f9; }
-
-        .chat-avatar { width: 50px; height: 50px; background: #ddd; border-radius: 50%; }
-
-        /* Chat Bubbles */
-        .message-container {
-            background: var(--white);
-            height: 300px;
-            overflow-y: auto;
-            padding: 15px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .bubble {
-            max-width: 75%;
-            padding: 10px 14px;
-            border-radius: 18px;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .bubble.left {
-            align-self: flex-start;
-            background: var(--chat-left);
-            color: #050505;
-        }
-
-        .bubble.right {
-            align-self: flex-end;
-            background: var(--chat-right);
-            color: white;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 8px;
-            padding-top: 10px;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            outline: none;
-        }
-
-        .send-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* General Card */
-        .card { background: var(--white); border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .avatar { width: 35px; height: 35px; background: #ddd; border-radius: 50%; }
-        .name { font-weight: bold; font-size: 14px; }
-    </style>
-</head>
-<body>
-
-<div class="top-nav">
-    <div class="header-top">
-        <div class="logo">Amde-Chat</div>
-        <div style="font-size: 20px; cursor: pointer;">🔍</div>
-    </div>
-    <div class="zagwe-banner">
-        <span>🏰</span>
-        <div>"ዛጉዌዎቹ ፡ የጥበብ ምንጭ፣ የክብር ማህደር - ትውልድን ከታሪክ ጋር የሚያገናኝ ድልድይ!"</div>
-    </div>
-    <div class="tabs">
-        <div class="tab-item active" onclick="openTab(event, 'home')">🏠</div>
-        <div class="tab-item" onclick="openTab(event, 'friends')">👥</div>
-        <div class="tab-item" onclick="openTab(event, 'videos')">▶️</div> 
-        <div class="tab-item" onclick="openTab(event, 'chat')">💬</div>
-        <div class="tab-item" onclick="openTab(event, 'notify')">🔔</div>
-    </div>
+<div id="home" class="page">
+    <div class="card"><h3>እንኳን ደህና መጡ!</h3><p id="user-display"></p></div>
+    <div class="card"><p>አምዴ-ቻት በቅርቡ ሙሉ በሙሉ ስራ ይጀምራል።</p></div>
 </div>
 
-<div id="home" class="page-content active-page">
-    <div class="card">
-        <div style="display: flex; gap: 10px;">
-            <div class="avatar"></div>
-            <div style="background: #f0f2f5; flex: 1; border-radius: 20px; padding: 10px 15px; color: var(--gray);">ምን እያሰቡ ነው?</div>
-        </div>
-    </div>
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
+    <div class="nav-item" onclick="showPage('profile', this)"><i class="fas fa-user-circle"></i></div>
 </div>
 
-<div id="chat" class="page-content">
-    <div class="card">
-        <h3 style="margin-top: 0;">መልዕክቶች</h3>
-        
-        <div class="message-container" id="msgBox">
-            <div class="bubble left">ሰላም ዋሲሁን! እንዴት ነህ?</div>
-            <div class="bubble right">ሰላም ነው ወንድም፣  እንዴት እየሄደ ነው?</div>
-            <div class="bubble left">በጣም ቆንጆ ነው! የዛጉዌዎቹ ኩራት ነው።</div>
-        </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        <div class="chat-input-area">
-            <input type="text" class="chat-input" id="chatIn" placeholder="መልዕክት ይጻፉ...">
-            <button class="send-btn" onclick="sendMessage()">▶</button>
-        </div>
-    </div>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBsPeWeVmHxcsiUgkSNZQ7VGurBb9_Wqm0",
+        authDomain: "amde-chat.firebaseapp.com",
+        projectId: "amde-chat",
+        storageBucket: "amde-chat.firebasestorage.app",
+        messagingSenderId: "266313399285",
+        appId: "1:266313399285:web:4004cd738664d1aa77bebc"
+    };
 
-    <div class="chat-list-item">
-        <div class="chat-avatar"></div>
-        <div>
-            <div class="name">ካሳሁን ዋግ</div>
-            <div style="font-size: 12px; color: green;">አሁን መስመር ላይ</div>
-        </div>
-    </div>
-</div>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-<div id="videos" class="page-content">
-    <div class="card"><h3>ቪዲዮዎች በቅርብ ቀን...</h3></div>
-</div>
+    let isLoginMode = true;
 
-<div id="friends" class="page-content">
-    <div class="card"><h3>የጓደኝነት ጥያቄዎች</h3></div>
-</div>
+    window.toggleAuth = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-title').innerText = isLoginMode ? "ይግቡ" : "ይመዝገቡ";
+        document.getElementById('auth-btn').innerText = isLoginMode ? "ግባ" : "ተመዝገብ";
+        document.getElementById('toggle-text').innerText = isLoginMode ? "አዲስ አካውንት ለመክፈት እዚህ ይጫኑ" : "አካውንት ካለዎት ይግቡ";
+    }
 
-<script>
-    function openTab(evt, tabName) {
-        var i, content, tablinks;
-        content = document.getElementsByClassName("page-content");
-        for (i = 0; i < content.length; i++) {
-            content[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tab-item");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
+    window.handleAuth = async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-    function sendMessage() {
-        let input = document.getElementById('chatIn');
-        let box = document.getElementById('msgBox');
-        if(input.value.trim() !== "") {
-            let msg = document.createElement('div');
-            msg.className = "bubble right";
-            msg.innerText = input.value;
-            box.appendChild(msg);
-            input.value = "";
-            box.scrollTop = box.scrollHeight;
-        }
-    }
+        try {
+            if (isLoginMode) {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("እንኳን ደህና መጡ!");
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("በተሳካ ሁኔታ ተመዝግበዋል!");
+            }
+            showPage('home', document.querySelector('.fa-home').parentElement);
+        } catch (error) {
+            alert("ስህተት፡ " + error.message);
+        }
+    }
+
+    window.showPage = (pageId, element) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        element.classList.add('active');
+    }
 </script>
 
 </body>
