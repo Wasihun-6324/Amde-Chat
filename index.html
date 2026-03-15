@@ -13,16 +13,15 @@
         .logo { color: var(--primary); font-size: 26px; font-weight: bold; }
         .zagwe-quote { background: linear-gradient(45deg, #1c1e21, #3a3d42); color: var(--gold); padding: 12px; text-align: center; font-style: italic; font-size: 13px; border-bottom: 3px solid var(--gold); }
         .nav-tabs { display: flex; justify-content: space-around; border-top: 1px solid #eee; }
-        .nav-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-gray); font-size: 20px; cursor: pointer; border-bottom: 3px solid transparent; }
-        .nav-item.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .nav-item { flex: 1; text-align: center; padding: 12px 0; color: var(--text-gray); font-size: 20px; cursor: pointer; }
+        .nav-item.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
         .page { display: none; padding: 15px; max-width: 500px; margin: auto; }
         .active-page { display: block; }
         .card { background: var(--white); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        input, textarea, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; }
-        .btn { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .post-img { width: 100%; border-radius: 8px; margin-top: 10px; }
-        .chat-box { height: 300px; overflow-y: auto; display: flex; flex-direction: column; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        .msg { padding: 8px 12px; border-radius: 18px; margin: 4px 0; max-width: 75%; font-size: 14px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .chat-box { height: 300px; overflow-y: auto; display: flex; flex-direction: column; background: #fff; padding: 10px; border: 1px solid #ddd; }
+        .msg { padding: 8px 12px; border-radius: 18px; margin: 4px 0; max-width: 70%; font-size: 14px; }
         .msg.sent { background: var(--primary); color: white; align-self: flex-end; }
         .msg.received { background: #e4e6eb; color: black; align-self: flex-start; }
     </style>
@@ -30,7 +29,7 @@
 <body>
 
 <header>
-    <div class="top-bar"><div class="logo">Amde-Chat</div><i class="fas fa-search" style="font-size:18px; color:gray;"></i></div>
+    <div class="top-bar"><div class="logo">Amde-Chat</div><i class="fas fa-search" style="font-size:20px; color:gray;"></i></div>
     <div class="zagwe-quote">"ዛጉዌዎቹ፡ ከዓለት የተቀረጸ ጥበብ፣ በክብር የቆመ ማንነት። አሻራችንን እናድሳለን!" 🏰✨</div>
     <div id="main-nav" class="nav-tabs" style="display: none;">
         <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-home"></i></div>
@@ -47,45 +46,34 @@
         <input type="email" id="email" placeholder="ኢሜይል">
         <input type="password" id="password" placeholder="የምስጢር ቁጥር">
         <button class="btn" onclick="handleAuth()" id="auth-btn">ግባ</button>
-        <p onclick="toggleAuth()" style="color:var(--primary); text-align:center; cursor:pointer; font-size:14px;">አዲስ አካውንት ይክፈቱ</p>
+        <p onclick="toggleAuth()" style="color:var(--primary); text-align:center; cursor:pointer;">አዲስ አካውንት ይክፈቱ</p>
     </div>
 </div>
 
 <div id="home" class="page">
-    <div class="card">
-        <textarea id="postText" placeholder="ምን እያሰቡ ነው?"></textarea>
-        <input type="file" id="postFile" accept="image/*" style="font-size:12px;">
-        <button class="btn" onclick="createPost()" id="post-btn">Post</button>
-    </div>
+    <div class="card"><textarea id="postText" placeholder="ምን እያሰቡ ነው?"></textarea><button class="btn" onclick="createPost()">Post</button></div>
     <div id="feed"></div>
 </div>
 
 <div id="friends" class="page"><div class="card"><h3>ሰዎችን ፈልግ</h3><div id="users-list"></div></div></div>
 
 <div id="chat" class="page">
-    <div class="card">
-        <h3>ቻት</h3>
-        <div id="chat-container" class="chat-box"></div>
-        <div style="display:flex; gap:5px; margin-top:10px;">
-            <input type="text" id="chatMsg" placeholder="መልዕክት...">
-            <button class="btn" style="width:70px;" onclick="sendMsg()">ላክ</button>
-        </div>
-    </div>
+    <div class="card"><h3>Live Chat</h3><div id="chat-container" class="chat-box"></div>
+    <div style="display:flex; gap:5px; margin-top:10px;"><input type="text" id="chatMsg" placeholder="መልዕክት..."><button class="btn" style="width:70px;" onclick="sendMsg()">ላክ</button></div></div>
 </div>
 
 <div id="menu" class="page">
     <div class="card" style="text-align:center;">
         <i class="fas fa-user-circle" style="font-size: 60px; color: #ddd;"></i>
-        <h3 id="p-name">ተጠቃሚ</h3>
-        <hr>
-        <button class="btn" style="background:#f0f2f5; color:red;" onclick="logoutUser()">ውጣ (Logout)</button>
+        <h3 id="p-name">ተጠቃሚ</h3><hr>
+        <button class="btn" style="background:#f0f2f5; color:red;" onclick="logout()">ውጣ (Logout)</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBHcrGqhXf4tkIqPi1sMCFC4zo9XrRoBFE",
@@ -113,60 +101,54 @@
         }
     });
 
-    window.logoutUser = () => {
-        signOut(auth).then(() => {
-            location.reload();
-        }).catch((error) => { alert("Logout አልተቻለም፦ " + error.message); });
-    };
+    window.logout = () => { signOut(auth).then(() => { location.reload(); }); };
 
     window.handleAuth = async () => {
         const e = document.getElementById('email').value, p = document.getElementById('password').value;
         const isReg = document.getElementById('auth-btn').innerText === "ተመዝገብ";
         try {
-            if (isReg) {
+            if(isReg) {
                 const fn = document.getElementById('fullName').value;
                 const uc = await createUserWithEmailAndPassword(auth, e, p);
                 await setDoc(doc(db, "users", uc.user.uid), { fullName: fn, email: e, uid: uc.user.uid });
             } else { await signInWithEmailAndPassword(auth, e, p); }
-        } catch (err) { alert(err.message); }
+        } catch(err) { alert(err.message); }
     };
 
     window.createPost = async () => {
         const t = document.getElementById('postText').value;
-        const btn = document.getElementById('post-btn');
-        if(!t) return;
-        btn.innerText = "በመለጠፍ ላይ...";
-        await addDoc(collection(db, "posts"), { text: t, user: auth.currentUser.email, time: Date.now() });
-        document.getElementById('postText').value = ""; btn.innerText = "Post";
+        if(t) { await addDoc(collection(db, "posts"), { text: t, user: auth.currentUser.email, time: Date.now() }); document.getElementById('postText').value = ""; }
     };
 
     function loadPosts() {
         onSnapshot(query(collection(db, "posts"), orderBy("time", "desc")), (snap) => {
             const f = document.getElementById('feed'); f.innerHTML = "";
-            snap.forEach(d => {
-                f.innerHTML += `<div class="card"><strong>${d.data().user}</strong><p>${d.data().text}</p></div>`;
-            });
+            snap.forEach(d => { f.innerHTML += `<div class="card"><strong>${d.data().user}</strong><p>${d.data().text}</p></div>`; });
         });
     }
 
-    async function loadUsers() {
+    function loadUsers() {
         onSnapshot(collection(db, "users"), (snap) => {
             const list = document.getElementById('users-list'); list.innerHTML = "";
             snap.forEach(d => {
                 if(d.id !== auth.currentUser.uid) {
                     list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; align-items:center;">
                         <span>${d.data().fullName}</span>
-                        <button class="btn" style="width:auto; padding:5px 10px;" onclick="alert('ጓደኝነት ተጠየቀ!')">Add Friend</button>
+                        <button class="btn" style="width:auto; padding:5px 10px;" onclick="addFriend('${d.id}')">Add Friend</button>
                     </div>`;
                 }
             });
         });
     }
 
+    window.addFriend = async (friendId) => {
+        await addDoc(collection(db, "friendRequests"), { from: auth.currentUser.uid, to: friendId, status: "pending" });
+        alert("ጓደኝነት ተጠየቀ!");
+    };
+
     window.sendMsg = async () => {
-        const m = document.getElementById('chatMsg').value; if(!m) return;
-        await addDoc(collection(db, "messages"), { text: m, sender: auth.currentUser.email, time: Date.now() });
-        document.getElementById('chatMsg').value = "";
+        const m = document.getElementById('chatMsg').value;
+        if(m) { await addDoc(collection(db, "messages"), { text: m, sender: auth.currentUser.email, time: Date.now() }); document.getElementById('chatMsg').value = ""; }
     };
 
     function loadMessages() {
