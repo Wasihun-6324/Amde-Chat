@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amde-Chat | Ultimate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --amde-blue: #1877F2; --bg-gray: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-gray); padding-bottom: 70px; }
 
+        /* የቀለም አኒሜሽን (Rainbow Effect) */
+        .brand-name {
+            font-size: 45px; font-weight: 900; text-align: center; margin: 20px 0;
+            background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #0000ff, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: rainbow 8s linear infinite;
+        }
+        @keyframes rainbow { 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
+
+        .quote { text-align: center; color: #1a3a5f; font-style: italic; margin: 10px 20px; font-size: 16px; }
+
+        /* Auth & Cards */
+        .card { background: #fff; padding: 20px; border-radius: 12px; margin: 15px auto; width: 90%; max-width: 450px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; outline: none; }
+        .btn { background: var(--amde-blue); color: #fff; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #145dbf; }
+
+        /* Navigation */
+        nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #ddd; z-index: 100; }
+        .nav-item { color: #65676b; font-size: 22px; cursor: pointer; }
+        .nav-item.active { color: var(--amde-blue); }
+
+        /* Feed & Media */
+        .page { display: none; }
+        .active-page { display: block; }
+        .post-card { background: #fff; margin-bottom: 10px; padding: 15px; border-bottom: 1px solid #ddd; }
+        .post-media { width: 100%; border-radius: 8px; margin-top: 10px; max-height: 400px; object-fit: cover; }
+        
+        /* Messenger */
+        .chat-box { height: 300px; overflow-y: auto; background: #f9f9f9; padding: 10px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px; }
+        .msg { padding: 8px 12px; border-radius: 15px; max-width: 70%; font-size: 14px; }
+        .sent { background: var(--amde-blue); color: #fff; align-self: flex-end; }
+        .recv { background: #e4e6eb; color: #000; align-self: flex-start; }
+    </style>
+</head>
+<body>
+
+<div id="auth-page">
+    <div class="brand-name">AMDE-CHAT</div>
+    <p class="quote">"ትናንት በድንጋይ ላይ የታነጸው የዛጉዌ ጥበብ፤ ዛሬ በአምድ-ቻት በዲጂታል ዓለም ዳግም ይኖራል!"</p>
+    <div class="card">
+        <input type="email" id="email" placeholder="ኢሜይል (Email)">
+        <input type="password" id="password" placeholder="የምስጢር ቁጥር (Password)">
+        <button onclick="handleAuth()" class="btn">ግባ / ተመዝገብ</button>
+    </div>
+</div>
+
+<div id="main-app" style="display:none;">
+    <header style="background:#fff; padding:10px; text-align:center; border-bottom:1px solid #ddd; position: sticky; top:0; z-index: 10;">
+        <span style="font-weight:900; color:var(--amde-blue); font-size:20px;">AMDE-CHAT</span>
+    </header>
+
+    <div id="home" class="page active-page">
+        <div class="card">
+            <textarea id="postTxt" placeholder="ምን አዲስ ነገር አለ?"></textarea>
+            <input type="file" id="postFile" accept="image/*,video/*">
+            <button onclick="uploadPost()" class="btn">Post</button>
+        </div>
+        <div id="feed-container"></div>
+    </div>
+
+    <div id="messenger" class="page">
+        <div class="card">
+            <input type="text" id="targetUser" placeholder="የጓደኛ ኢሜይል...">
+            <div id="chat-window" class="chat-box"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="chatMsg" placeholder="መልዕክት...">
+                <button onclick="sendMsg()" class="btn" style="width:60px;"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-item active" onclick="showPage('home', this)"><i class="fa fa-home"></i></div>
+        <div class="nav-item" onclick="showPage('messenger', this)"><i class="fa fa-comment-dots"></i></div>
+        <div class="nav-item" onclick="location.reload()"><i class="fa fa-power-off"></i></div>
+    </nav>
+</div>
+
+<script>
+    // Supabase Configuration
+    const supabaseUrl = 'https://kwrnjepvkqlvwljsjfvj.supabase.co';
+    const supabaseKey = 'sb_publishable_ROrHu97hk6nLIIEFWDFTIA_llXAy4YL';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    let currentUser = null;
+
+    async function handleAuth() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        if(!email || !password) return alert("መረጃ ያስገቡ");
+
+        const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+            const { data: d2, error: e2 } = await _supabase.auth.signUp({ email, password });
+            if (e2) alert("ስህተት፡ " + e2.message); else enterApp(d2.user);
+        } else enterApp(data.user);
+    }
+
+    function enterApp(user) {
+        currentUser = user;
+        document.getElementById('auth-page').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        loadFeed();
+    }
+
+    function showPage(id, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active-page');
+        el.classList.add('active');
+        if(id === 'home') loadFeed();
+    }
+
+    async function uploadPost() {
+        const txt = document.getElementById('postTxt').value;
+        const file = document.getElementById('postFile').files[0];
+        let mediaUrl = null, type = null;
+
+        if (file) {
+            const fName = Date.now() + "_" + file.name;
+            type = file.type.split('/')[0];
+            const { data } = await _supabase.storage.from('post-media').upload(fName, file);
+            if (data) mediaUrl = _supabase.storage.from('post-media').getPublicUrl(fName).data.publicUrl;
+        }
+
+        await _supabase.from('posts').insert([{ content: txt, user_name: currentUser.email, media_url: mediaUrl, file_type: type }]);
+        document.getElementById('postTxt').value = "";
+        loadFeed();
+    }
+
+    async function loadFeed() {
+        const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+        const cont = document.getElementById('feed-container');
+        if(!data) return;
+        cont.innerHTML = data.map(p => `
+            <div class="post-card">
+                <b>@${p.user_name.split('@')[0]}</b>
+                <p>${p.content}</p>
+                ${p.media_url ? (p.file_type === 'video' ? 
+                    `<video src="${p.media_url}" controls class="post-media"></video>` : 
+                    `<img src="${p.media_url}" class="post-media">`) : ''}
+            </div>
+        `).join('');
+    }
+
+    async function sendMsg() {
+        const msg = document.getElementById('chatMsg').value;
+        const target = document.getElementById('targetUser').value;
+        if(!msg || !target) return;
+        await _supabase.from('messages').insert([{ sender: currentUser.email, receiver: target, message: msg }]);
+        document.getElementById('chatMsg').value = "";
+        alert("መልዕክት ተልኳል!");
+    }
+</script>
+</body>
+</html>
